@@ -1,0 +1,331 @@
+<html>
+<script src="chart-js/Chart.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
+<style>
+    #wrapper {
+        max-width: 70%;
+        margin: 40px auto;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+
+    .boxes {
+        position: relative;
+        height: 420px;
+    }
+
+    .temp {
+        width: calc(50% - 10px);
+        height: 180px;
+        text-align: center;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        box-shadow: 0px 0px 2px #111;
+    }
+
+    .chart {
+        clear: both;
+        display: block;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0px 0px 2px #111;
+        border-radius: 1px;
+    }
+
+    .name {
+        position: relative;
+        font-weight: 300;
+        font-size: 14pt;
+        text-shadow: 0px 0px 2px #888;
+        width: calc(100% - 40px);
+        padding: 20px;
+        box-shadow: 0px 0px 1px #111;
+        border-radius: 1px;
+        z-index: -100;
+    }
+
+    .chart_h1 {
+        margin: 0;
+        padding: 15px 0;
+        font-size: 16pt;
+        font-weight: 600;
+    }
+
+    .canvas {
+        padding: 20px;
+    }
+
+    .border {
+        border-radius: 1px;
+        box-shadow: 0px 0px 1px #111;
+    }
+
+    .blue {
+        background: linear-gradient(45deg, #0288d1, #26c6da) !important;
+        color: #fff;
+    }
+
+    .green {
+        background: linear-gradient(45deg, #1abc9c, #2ecc71) !important;
+        color: #fff;
+    }
+
+    .yellow {
+        background: linear-gradient(45deg, #f39c12, #f1c40f) !important;
+        color: #fff;
+    }
+
+    .red {
+        background: linear-gradient(45deg, #c0392b, #e74c3c) !important;
+        color: #fff;
+    }
+
+    .gray {
+        background: linear-gradient(45deg, #2c3e50, #34495e) !important;
+        color: #fff;
+    }
+
+    .temp:nth-child(odd) {
+        float: left;
+    }
+
+    .temp:nth-child(even) {
+        float: right;
+    }
+
+    .temp_h1 {
+        color: #fff;
+        font-weight: 200;
+        font-size: 42pt;
+        margin-top: 50px;
+    }
+
+    .pm {
+        font-size: 22pt;
+    }
+
+    img {
+        width: 120px;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 10pt;
+    }
+
+    a:link,
+    a:visited {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    @media screen and (max-width: 1000px) {
+        #wrapper {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        #wrapper {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            max-width: 95%;
+        }
+
+        .temp {
+            width: 100%;
+            height: 130px;
+            margin-top: 15px;
+        }
+        .temp:last-child {
+            margin-bottom: 50px;
+        }
+    }
+</style>
+
+<div id="wrapper">
+    <div class="boxes">
+        <div class="temp blue">
+            <img src="thermometer.png">
+            <p class="temp_h1">
+                19&deg;C
+            </p>
+        </div>
+        <div class="temp green">
+            <img src="humidity.png">
+            <p class="temp_h1">
+                69%
+            </p>
+        </div>
+        <div class="temp yellow">
+            <img src="wind.png">
+            <p class="temp_h1">
+                21<span class="pm"> μm/m<sup>3</sup></span>
+            </p>
+        </div>
+        <div class="temp red">
+            <img src="smoke.png">
+            <p class="temp_h1">
+                37<span class="pm"> μm/m<sup>3</sup></span>
+            </p>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name blue">Temperatura</p>
+        <div class="canvas">
+            <canvas id="myChart1" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name green">Wilgotność</p>
+        <div class="canvas">
+            <canvas id="myChart2" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name red">Zanieczyszczenie powietrza</p>
+        <div class="canvas">
+            <canvas id="myChart3" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="canvas gray border footer">
+        &copy; <a href="http://damianzolkos.github.io">Damian Żółkoś</a> 2020
+        <br><br>
+        Icons made by<br>
+        <a href="https://www.flaticon.com/authors/kirill-kazachek" title="Kirill Kazachek">
+            Kirill Kazachek,</a>
+        <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">
+            Vitaly Gorbachev,</a>
+        <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik,</a>
+        <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a><br>
+        from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+    </div>
+</div>
+
+<script>
+    let ctx1 = document.getElementById('myChart1');
+    var ctx1_1 = document.getElementById('myChart1').getContext("2d");
+    var blue = ctx1_1.createLinearGradient(500, 0, 100, 0);
+    blue.addColorStop(1, "#0288d1");
+    blue.addColorStop(0, "#26c6da");
+
+    let ctx2 = document.getElementById('myChart2');
+    var ctx2_2 = document.getElementById('myChart2').getContext("2d");
+    var green = ctx2_2.createLinearGradient(500, 0, 100, 0);
+    green.addColorStop(1, "#1abc9c");
+    green.addColorStop(0, "#2ecc71");
+
+    let ctx3 = document.getElementById('myChart3');
+    var ctx3_3 = document.getElementById('myChart3').getContext("2d");
+    var yellow = ctx3_3.createLinearGradient(500, 0, 100, 0);
+    yellow.addColorStop(1, "#f39c12");
+    yellow.addColorStop(0, "#f1c40f");
+    var red = ctx3_3.createLinearGradient(500, 0, 100, 0);
+    red.addColorStop(1, "#c0392b");
+    red.addColorStop(0, "#e74c3c");
+
+
+    let data = {
+        datasets: [{
+            borderColor: blue,
+            borderWidth: 5,
+            fill: false,
+            pointRadius: 0,
+            pointRadiusHover: 4,
+            pointBorderWidth: 0
+        }]
+    };
+    let data2 = {
+        datasets: [{
+            borderColor: green,
+            borderWidth: 5,
+            fill: false,
+            pointRadius: 0,
+            pointRadiusHover: 4,
+            pointBorderWidth: 0
+        }]
+    };
+    let data3 = {
+        datasets: [{
+                borderColor: yellow,
+                borderWidth: 5,
+                fill: false,
+                pointRadius: 0,
+                pointRadiusHover: 4,
+                pointBorderWidth: 0
+            },
+            {
+                borderColor: red,
+                borderWidth: 5,
+                fill: false,
+                pointRadius: 0,
+                pointRadiusHover: 4,
+                pointBorderWidth: 0
+            }
+        ]
+    };
+    let options = {
+        responsive: true,
+        legend: {
+            display: false
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: true,
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: ''
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: false,
+                    labelString: ''
+                }
+            }]
+        }
+    };
+
+    function renderCharts() {
+        data.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        data.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        let myChart1 = new Chart(ctx1, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+
+        data2.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        data2.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        let myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: data2,
+            options: options
+        });
+
+        data3.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        data3.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        data3.datasets[1].data = [3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4];
+        let myChart3 = new Chart(ctx3, {
+            type: 'line',
+            data: data3,
+            options: options
+        });
+    }
+    renderCharts();
+</script>
+
+</html>
