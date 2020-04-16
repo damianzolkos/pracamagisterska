@@ -13,7 +13,6 @@
         clear: both;
         display: block;
         position: relative;
-        height: 420px;
     }
 
     .temp {
@@ -117,6 +116,9 @@
         text-align: center;
         font-size: 10pt;
     }
+    .center {
+        text-align: center;
+    }
 
     a:link,
     a:visited {
@@ -149,11 +151,24 @@
             margin-bottom: 50px;
         }
     }
+    .margin-bottom {
+        margin-bottom: 20px;
+    }
+    .clear {
+        clear: both;
+        display: block;
+    }
 </style>
 
 <div id="wrapper">
 
-    <div class="boxes">
+    <div class="gray canvas border center margin-bottom">
+
+        Implementacja danych ze stacji pogodowej na stronie internetowej
+
+    </div>
+
+    <div class="boxes margin-bottom">
         <div class="temp blue">
             <img src="img/thermometer.png">
             <p class="temp_h1">
@@ -178,6 +193,7 @@
                 37<span class="pm"> μm/m<sup>3</sup></span>
             </p>
         </div>
+        <div class="clear"></div>
     </div>
 
     <div class="chart">
