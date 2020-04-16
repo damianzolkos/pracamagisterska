@@ -10,15 +10,18 @@
     }
 
     .boxes {
+        clear: both;
+        display: block;
         position: relative;
         height: 420px;
     }
 
     .temp {
+        position: relative;
         width: calc(50% - 10px);
         height: 180px;
         text-align: center;
-        display: inline-flex;
+        display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 20px;
@@ -141,6 +144,7 @@
             height: 130px;
             margin-top: 15px;
         }
+
         .temp:last-child {
             margin-bottom: 50px;
         }
@@ -148,27 +152,28 @@
 </style>
 
 <div id="wrapper">
+
     <div class="boxes">
         <div class="temp blue">
-            <img src="thermometer.png">
+            <img src="img/thermometer.png">
             <p class="temp_h1">
                 19&deg;C
             </p>
         </div>
         <div class="temp green">
-            <img src="humidity.png">
+            <img src="img/humidity.png">
             <p class="temp_h1">
                 69%
             </p>
         </div>
         <div class="temp yellow">
-            <img src="wind.png">
+            <img src="img/wind.png">
             <p class="temp_h1">
                 21<span class="pm"> μm/m<sup>3</sup></span>
             </p>
         </div>
         <div class="temp red">
-            <img src="smoke.png">
+            <img src="img/smoke.png">
             <p class="temp_h1">
                 37<span class="pm"> μm/m<sup>3</sup></span>
             </p>
@@ -236,56 +241,51 @@
     let data = {
         datasets: [{
             borderColor: blue,
-            borderWidth: 5,
-            fill: false,
-            pointRadius: 0,
-            pointRadiusHover: 4,
-            pointBorderWidth: 0
+            borderWidth: 4,
+            fill: false
         }]
     };
     let data2 = {
         datasets: [{
             borderColor: green,
-            borderWidth: 5,
-            fill: false,
-            pointRadius: 0,
-            pointRadiusHover: 4,
-            pointBorderWidth: 0
+            borderWidth: 4,
+            fill: false
         }]
     };
     let data3 = {
         datasets: [{
                 borderColor: yellow,
-                borderWidth: 5,
+                borderWidth: 4,
                 fill: false,
-                pointRadius: 0,
-                pointRadiusHover: 4,
-                pointBorderWidth: 0
+                label: "PM 2.5"
+
             },
             {
                 borderColor: red,
-                borderWidth: 5,
+                borderWidth: 4,
                 fill: false,
-                pointRadius: 0,
-                pointRadiusHover: 4,
-                pointBorderWidth: 0
+                label: "PM 10"
             }
         ]
     };
     let options = {
         responsive: true,
         legend: {
-            display: false
+            display: true
         },
         tooltips: {
             mode: 'index',
             intersect: true,
         },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
         scales: {
             xAxes: [{
                 display: true,
                 scaleLabel: {
-                    display: true,
+                    display: false,
                     labelString: ''
                 }
             }],
@@ -300,25 +300,45 @@
     };
 
     function renderCharts() {
-        data.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        data.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        data.labels = [];
+        data.datasets[0].data = [];
+        data2.labels = [];
+        data2.datasets[0].data = [];
+        data3.labels = [];
+        data3.datasets[0].data = [];
+        data3.datasets[1].data = [];
+
+        for (let i = 0; i < 48; i++) {
+            data.datasets[0].data[i] = Math.random() * 10;
+            data.labels[i] = i;
+
+            data2.datasets[0].data[i] = Math.random() * 10;
+            data2.labels[i] = i;
+
+            data3.datasets[0].data[i] = Math.random() * 10;
+            data3.datasets[1].data[i] = data3.datasets[0].data[i] * 0.6;
+            data3.labels[i] = i;
+        }
+
+        // data.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        // data.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
         let myChart1 = new Chart(ctx1, {
             type: 'line',
             data: data,
             options: options
         });
 
-        data2.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        data2.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        // data2.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        // data2.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
         let myChart2 = new Chart(ctx2, {
             type: 'line',
             data: data2,
             options: options
         });
 
-        data3.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        data3.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
-        data3.datasets[1].data = [3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4];
+        // data3.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        // data3.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        // data3.datasets[1].data = [3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4];
         let myChart3 = new Chart(ctx3, {
             type: 'line',
             data: data3,
