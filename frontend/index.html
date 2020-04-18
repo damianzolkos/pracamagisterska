@@ -1,5 +1,6 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta charset="utf-8">
 <script src="chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
 <style>
@@ -117,6 +118,7 @@
         text-align: center;
         font-size: 10pt;
     }
+
     .center {
         text-align: center;
     }
@@ -127,9 +129,34 @@
         text-decoration: none;
     }
 
+    .margin-bottom {
+        margin-bottom: 20px;
+    }
+
+    .clear {
+        clear: both;
+        display: block;
+    }
+
+    .legend {
+        margin-top: -25px;
+        padding: 0px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .legend p {
+        display: inline-flex;
+        margin-left: 8px;
+        margin-right: 15px;
+        font-size: 11pt;
+        height: 30px;
+        vertical-align: middle;
+    }
+
     @media screen and (max-width: 1000px) {
         #wrapper {
-            margin-top: 10px;
+            margin-top: 30px;
             margin-bottom: 20px;
             max-width: 80%;
         }
@@ -137,7 +164,7 @@
 
     @media screen and (max-width: 800px) {
         #wrapper {
-            margin-top: 10px;
+            margin-top: 30px;
             margin-bottom: 20px;
             max-width: 95%;
         }
@@ -151,13 +178,6 @@
         .temp:last-child {
             margin-bottom: 50px;
         }
-    }
-    .margin-bottom {
-        margin-bottom: 20px;
-    }
-    .clear {
-        clear: both;
-        display: block;
     }
 </style>
 
@@ -173,25 +193,25 @@
         <div class="temp blue">
             <img src="img/thermometer.png">
             <p class="temp_h1">
-                19&deg;C
+                <span id="actualTemperature"></span>&deg;C
             </p>
         </div>
         <div class="temp green">
             <img src="img/humidity.png">
             <p class="temp_h1">
-                69%
+                <span id="actualHumidity"></span>%
             </p>
         </div>
         <div class="temp yellow">
-            <img src="img/wind.png">
+            <img src="img/wind2.png">
             <p class="temp_h1">
-                21<span class="pm"> μm/m<sup>3</sup></span>
+                <span id="actualPM25"></span><span class="pm"> μm/m<sup>3</sup></span>
             </p>
         </div>
         <div class="temp red">
-            <img src="img/smoke.png">
+            <img src="img/smoke2.png">
             <p class="temp_h1">
-                37<span class="pm"> μm/m<sup>3</sup></span>
+                <span id="actualPM10"></span><span class="pm"> μm/m<sup>3</sup></span>
             </p>
         </div>
         <div class="clear"></div>
@@ -214,6 +234,12 @@
     <div class="chart">
         <p class="name red">Zanieczyszczenie powietrza</p>
         <div class="canvas">
+            <div class="legend">
+                <div style="display: inline-block; width: 20px; height: 20px; background-color: #f39c12;"></div>
+                <p>PM 2.5</p>
+                <div style="display: inline-block; width: 20px; height: 20px; background-color: #c0392b;"></div>
+                <p>PM 10</p>
+            </div>
             <canvas id="myChart3" width="10" height="6"></canvas>
         </div>
     </div>
@@ -254,7 +280,6 @@
     red.addColorStop(1, "#c0392b");
     red.addColorStop(0, "#e74c3c");
 
-
     let data = {
         datasets: [{
             borderColor: blue,
@@ -288,7 +313,7 @@
     let options = {
         responsive: true,
         legend: {
-            display: true
+            display: false
         },
         tooltips: {
             mode: 'index',
@@ -316,7 +341,25 @@
         }
     };
 
-    function renderCharts() {
+    async function getData(url) {
+        const data = await fetch(url)
+            .then(
+                function (response) {
+                    if (response.status !== 200) {
+                        console.log('There was a problem. Status Code: ' +
+                            response.status);
+                        return;
+                    }
+                    return response.json();
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+        return data;
+    }
+
+    async function renderCharts() {
         data.labels = [];
         data.datasets[0].data = [];
         data2.labels = [];
@@ -325,37 +368,41 @@
         data3.datasets[0].data = [];
         data3.datasets[1].data = [];
 
-        for (let i = 0; i < 48; i++) {
-            data.datasets[0].data[i] = Math.random() * 10;
-            data.labels[i] = i;
+        // download data
+        let fetchedData = await getData("data.json");
+        console.log(fetchedData);
 
-            data2.datasets[0].data[i] = Math.random() * 10;
-            data2.labels[i] = i;
+        data.datasets[0].data = fetchedData.temperature.data;
+        data.labels = fetchedData.temperature.labels;
 
-            data3.datasets[0].data[i] = Math.random() * 10;
-            data3.datasets[1].data[i] = data3.datasets[0].data[i] * 0.6;
-            data3.labels[i] = i;
-        }
+        data2.datasets[0].data = fetchedData.humidity.data;
+        data2.labels = fetchedData.humidity.labels;
 
-        // data.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        // data.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+        data3.datasets[0].data = fetchedData.pm.pm25;
+        data3.datasets[1].data = fetchedData.pm.pm10;
+        data3.labels = fetchedData.pm.labels;
+
+        document.getElementById('actualTemperature').innerHTML = Math.round(data.datasets[0].data[data.datasets[0]
+            .data.length - 1]);
+        document.getElementById('actualHumidity').innerHTML = Math.round(data2.datasets[0].data[data2.datasets[0]
+            .data.length - 1]);
+        document.getElementById('actualPM25').innerHTML = Math.round(data3.datasets[0].data[data3.datasets[0].data
+            .length - 1]);
+        document.getElementById('actualPM10').innerHTML = Math.round(data3.datasets[1].data[data3.datasets[1].data
+            .length - 1]);
+
         let myChart1 = new Chart(ctx1, {
             type: 'line',
             data: data,
             options: options
         });
 
-        // data2.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        // data2.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
         let myChart2 = new Chart(ctx2, {
             type: 'line',
             data: data2,
             options: options
         });
 
-        // data3.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        // data3.datasets[0].data = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
-        // data3.datasets[1].data = [3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4];
         let myChart3 = new Chart(ctx3, {
             type: 'line',
             data: data3,
