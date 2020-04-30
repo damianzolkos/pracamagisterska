@@ -1,5 +1,5 @@
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta charset="utf-8">
 <script src="chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
@@ -232,6 +232,13 @@
     </div>
 
     <div class="chart">
+        <p class="name yellow">Ciśnienie</p>
+        <div class="canvas">
+            <canvas id="myChart3" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
         <p class="name red">Zanieczyszczenie powietrza</p>
         <div class="canvas">
             <div class="legend">
@@ -240,7 +247,7 @@
                 <div style="display: inline-block; width: 20px; height: 20px; background-color: #c0392b;"></div>
                 <p>PM 10</p>
             </div>
-            <canvas id="myChart3" width="10" height="6"></canvas>
+            <canvas id="myChart4" width="10" height="6"></canvas>
         </div>
     </div>
 
@@ -272,11 +279,17 @@
     green.addColorStop(0, "#2ecc71");
 
     let ctx3 = document.getElementById('myChart3');
-    var ctx3_3 = document.getElementById('myChart3').getContext("2d");
-    var yellow = ctx3_3.createLinearGradient(500, 0, 100, 0);
+    var ctx3_2 = document.getElementById('myChart3').getContext("2d");
+    var green = ctx3_2.createLinearGradient(500, 0, 100, 0);
+    green.addColorStop(1, "#1abc9c");
+    green.addColorStop(0, "#2ecc71");
+
+    let ctx4 = document.getElementById('myChart4');
+    var ctx4_2 = document.getElementById('myChart4').getContext("2d");
+    var yellow = ctx4_2.createLinearGradient(500, 0, 100, 0);
     yellow.addColorStop(1, "#f39c12");
     yellow.addColorStop(0, "#f1c40f");
-    var red = ctx3_3.createLinearGradient(500, 0, 100, 0);
+    var red = ctx4_2.createLinearGradient(500, 0, 100, 0);
     red.addColorStop(1, "#c0392b");
     red.addColorStop(0, "#e74c3c");
 
@@ -295,6 +308,13 @@
         }]
     };
     let data3 = {
+        datasets: [{
+            borderColor: yellow,
+            borderWidth: 4,
+            fill: false
+        }]
+    };
+    let data4 = {
         datasets: [{
                 borderColor: yellow,
                 borderWidth: 4,
@@ -348,7 +368,7 @@
                     if (response.status !== 200) {
                         console.log('There was a problem. Status Code: ' +
                             response.status);
-                        return;
+                        return false;
                     }
                     return response.json();
                 }
@@ -366,29 +386,45 @@
         data2.datasets[0].data = [];
         data3.labels = [];
         data3.datasets[0].data = [];
-        data3.datasets[1].data = [];
+        data4.labels = [];
+        data4.datasets[0].data = [];
+        data4.datasets[1].data = [];
 
         // download data
-        let fetchedData = await getData("data.json");
-        console.log(fetchedData);
+        // let rawData = await getData("./data.json");
+        var rawData;
+        if (await getData("http://192.168.1.11/pracamagisterska/backend/data.php")) {
+            console.log("ok");
+            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data.php");
+        } else {
+            console.log("using sample data");
+            rawData = {"code":200,"message":"Data","data":{"labels":["2020-04-30 17:55:00","2020-04-30 17:57:11","2020-04-30 17:57:44","2020-04-30 17:58:00"],"temperature":[12,23,26,31],"humidity":[13,24,27,32],"pressure":[14,25,28,33],"pm25":[15,26,29,34],"pm10":[16,27,30,45]}};
+        }
 
-        data.datasets[0].data = fetchedData.temperature.data;
-        data.labels = fetchedData.temperature.labels;
+        let fetchedData = rawData.data;
+        console.log("code: ", rawData.code);
+        console.log("raw data: ", fetchedData);
 
-        data2.datasets[0].data = fetchedData.humidity.data;
-        data2.labels = fetchedData.humidity.labels;
+        data.datasets[0].data = fetchedData.temperature;
+        data.labels = fetchedData.labels;
 
-        data3.datasets[0].data = fetchedData.pm.pm25;
-        data3.datasets[1].data = fetchedData.pm.pm10;
-        data3.labels = fetchedData.pm.labels;
+        data2.datasets[0].data = fetchedData.humidity;
+        data2.labels = fetchedData.labels;
+
+        data3.datasets[0].data = fetchedData.pressure;
+        data3.labels = fetchedData.labels;
+
+        data4.datasets[0].data = fetchedData.pm25;
+        data4.datasets[1].data = fetchedData.pm10;
+        data4.labels = fetchedData.labels;
 
         document.getElementById('actualTemperature').innerHTML = Math.round(data.datasets[0].data[data.datasets[0]
             .data.length - 1]);
         document.getElementById('actualHumidity').innerHTML = Math.round(data2.datasets[0].data[data2.datasets[0]
             .data.length - 1]);
-        document.getElementById('actualPM25').innerHTML = Math.round(data3.datasets[0].data[data3.datasets[0].data
+        document.getElementById('actualPM25').innerHTML = Math.round(data4.datasets[0].data[data4.datasets[0].data
             .length - 1]);
-        document.getElementById('actualPM10').innerHTML = Math.round(data3.datasets[1].data[data3.datasets[1].data
+        document.getElementById('actualPM10').innerHTML = Math.round(data4.datasets[1].data[data4.datasets[1].data
             .length - 1]);
 
         let myChart1 = new Chart(ctx1, {
@@ -406,6 +442,12 @@
         let myChart3 = new Chart(ctx3, {
             type: 'line',
             data: data3,
+            options: options
+        });
+
+        let myChart4 = new Chart(ctx4, {
+            type: 'line',
+            data: data4,
             options: options
         });
     }
