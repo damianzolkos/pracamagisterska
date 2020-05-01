@@ -11,7 +11,7 @@ const char* ssid = "krosoft_domowy_3615";
 const char* password = "internecik55";
 const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php";
 
-int airPeriod = 1;
+int airPeriod = 30;
 
 SdsDustSensor sds(Serial);
 DHTesp dht;
@@ -83,5 +83,5 @@ void loop() {
     Serial.println(pm.statusToString());
   }
 
-  delay(3000);
+  delay(5000);
 }
