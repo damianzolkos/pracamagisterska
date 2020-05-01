@@ -1,5 +1,9 @@
 <?php
-$link = mysqli_connect("localhost", "root", "password", "mgr");
+include 'header.php';
+// header.php:
+// <?php
+// $link = mysqli_connect("localhost", "root", "password", "mgr");
+// ? >
 
 header('Access-Control-Allow-Origin: *');
 
