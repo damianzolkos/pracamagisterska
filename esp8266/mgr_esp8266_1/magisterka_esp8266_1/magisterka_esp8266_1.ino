@@ -9,7 +9,7 @@
 
 const char* ssid = "krosoft_domowy_3615";
 const char* password = "internecik55";
-const char* serverAddress = "http://192.168.1.107/pracamagisterska/backend/php/receive.php";
+const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php";
 
 int airPeriod = 1;
 
@@ -52,47 +52,36 @@ void loop() {
   pressureBME = bme.readPressure() / 100.0F;
   altitudeBME = bme.readAltitude(SEALEVELPRESSURE_HPA);
 
-  String response;
-  DynamicJsonDocument doc(1024);
-
-  //    JsonObject air  = doc.createNestedObject("air");
-  //    air["pm25"] = pm25;
-  //    air["pm10"] = pm10;
-  //    JsonObject dht22  = doc.createNestedObject("dht22");
-  //    dht22["temperature"] = temperatureDHT;
-  //    dht22["humidity"] = humidityDHT;
-  //    JsonObject bme  = doc.createNestedObject("bme");
-  //    bme["temperature"] = temperatureBME;
-  //    bme["humidity"] = humidityBME;
-  //    bme["pressure"] = pressureBME;
-  //    bme["altitude"] = altitudeBME;
-
-  doc["temp"] = 699;
-  doc["hum"] = 666;
-  doc["pm25"] = 566;
-  doc["pm10"] = 888;
-
-  serializeJson(doc, response);
-  Serial.println(response);
-
-  HTTPClient http;                                              // Declare object of class HTTPClient
-  http.begin(serverAddress);                                    // Specify request destination
-  http.addHeader("Content-Type", "application/json");           // Specify content-type header
-//  http.addHeader("Access-Control-Allow-Origin", "*");
-  int httpCode = http.POST(response);                           // Send the request
-  String payload = http.getString();                            // Get the response payload
-  Serial.println(httpCode);   //Print HTTP return code
-  Serial.println(payload);    //Print request response payload
-  http.end();                                                   // Close connection
-  
   PmResult pm = sds.readPm();
   if (pm.isOk()) {
     pm25 = pm.pm25;
     pm10 = pm.pm10;
+
+    String response;
+    DynamicJsonDocument doc(1024);
+
+    doc["temp"] = temperatureBME;
+    doc["hum"] = humidityBME;
+    doc["press"] = pressureBME;
+    doc["pm25"] = pm25;
+    doc["pm10"] = pm10;
+
+    serializeJson(doc, response);
+    Serial.println(response);
+
+    HTTPClient http;                                              // Declare object of class HTTPClient
+    http.begin(serverAddress);                                    // Specify request destination
+    http.addHeader("Content-Type", "application/json");           // Specify content-type header
+    http.addHeader("Access-Control-Allow-Origin", "*");
+    int httpCode = http.POST(response);                           // Send the request
+    String payload = http.getString();                            // Get the response payload
+    Serial.println(httpCode);   //Print HTTP return code
+    Serial.println(payload);    //Print request response payload
+    http.end();                                                   // Close connection
   } else {
-//    Serial.print("Could not read values from sensor, reason: ");
-//    Serial.println(pm.statusToString());
+    Serial.print("Could not read values from sensor, reason: ");
+    Serial.println(pm.statusToString());
   }
 
-  delay(5000);
+  delay(3000);
 }

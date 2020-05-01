@@ -1,5 +1,5 @@
 <?php
-$link = mysqli_connect("localhost", "root", "JAzolkos12/", "mgr");
+$link = mysqli_connect("localhost", "root", "password", "mgr");
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=UTF-8');

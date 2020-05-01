@@ -1,8 +1,0 @@
-<script>
-obj = { "table":"customers", "limit":10 };
-dbParam = JSON.stringify(obj);
-xmlhttp = new XMLHttpRequest();
-xmlhttp.open("POST", "http://localhost/pracamagisterska/backend/php/receive.php", true);
-xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlhttp.send(dbParam);
-</script>
