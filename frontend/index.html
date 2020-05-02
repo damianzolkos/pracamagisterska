@@ -349,6 +349,11 @@
                 scaleLabel: {
                     display: false,
                     labelString: ''
+                },
+                ticks: {
+                callback: function(value, index, values) {
+                        return value.slice(11,16);
+                    }
                 }
             }],
             yAxes: [{
@@ -356,6 +361,10 @@
                 scaleLabel: {
                     display: false,
                     labelString: ''
+                },
+                ticks: {
+                    suggestedMax: 100,
+                    suggestedMin: 0
                 }
             }]
         }

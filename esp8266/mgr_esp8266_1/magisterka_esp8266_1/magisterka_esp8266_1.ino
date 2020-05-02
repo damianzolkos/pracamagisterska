@@ -36,7 +36,7 @@ void setup() {
   Serial.println("");
 
   Serial.println(sds.setActiveReportingMode().toString());                // ensures sensor is in 'active' reporting mode
-  Serial.println(sds.setCustomWorkingPeriod(airPeriod).toString());       // sensor sends data every 3 minutes
+  Serial.println(sds.setCustomWorkingPeriod(30).toString());       // sensor sends data every 3 minutes
   dht.setup(D5, DHTesp::DHT22);                                           // Connect DHT sensor to GPIO 17
 
   bme.begin(0x76);
