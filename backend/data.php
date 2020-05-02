@@ -17,7 +17,13 @@ if($link === false){
 	sendResponse(500, [], 'Internal server error.');
 }
 
-$sql = "SELECT * FROM dane";
+// $sql = "SELECT * FROM dane";
+
+$sql = "SELECT * FROM (
+    SELECT * FROM dane ORDER BY id DESC LIMIT 48
+) sub
+ORDER BY id ASC";
+
 if($result = mysqli_query($link, $sql)){
     if(mysqli_num_rows($result) > 0){
 
