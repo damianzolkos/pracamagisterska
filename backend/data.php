@@ -34,7 +34,7 @@ if($result = mysqli_query($link, $sql)){
 				array_push($times, $row['time']);
 				array_push($temps, (int)$row['temp']);
 				array_push($hums, (int)$row['hum']);
-				array_push($press, (int)$row['hum']);
+				array_push($press, (int)$row['press']);
 				array_push($pm25s, (int)$row['pm25']);
 				array_push($pm10s, (int)$row['pm10']);
 		}
