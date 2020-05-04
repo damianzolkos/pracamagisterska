@@ -406,9 +406,9 @@
         // download data
         // let rawData = await getData("./data.json");
         var rawData;
-        if (await getData("http://192.168.1.11/pracamagisterska/backend/data2.php")) {
+        if (await getData("http://192.168.1.11/pracamagisterska/backend/data.php")) {
             console.log("ok");
-            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data2.php");
+            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data.php");
         } else {
             console.log("using sample data");
             rawData = await getData("./data.json");
