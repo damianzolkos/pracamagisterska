@@ -26,7 +26,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 20px;
-        box-shadow: 0px 0px 2px #111;
+        border-radius: 2px;
     }
 
     .chart {
@@ -35,7 +35,7 @@
         margin-top: 40px;
         margin-bottom: 40px;
         box-shadow: 0px 0px 2px #111;
-        border-radius: 1px;
+        border-radius: 2px;
     }
 
     .name {
@@ -55,6 +55,7 @@
         padding: 15px 0;
         font-size: 16pt;
         font-weight: 600;
+        border-radius: 2px;
     }
 
     .canvas {
@@ -63,27 +64,30 @@
 
     .border {
         border-radius: 1px;
-        box-shadow: 0px 0px 1px #111;
     }
 
     .blue {
         background: linear-gradient(45deg, #0288d1, #26c6da) !important;
         color: #fff;
+        box-shadow: 0px 0px 2px #26c6da;
     }
 
     .green {
         background: linear-gradient(45deg, #1abc9c, #2ecc71) !important;
         color: #fff;
+        box-shadow: 0px 0px 2px #2ecc71;
     }
 
     .yellow {
         background: linear-gradient(45deg, #f39c12, #f1c40f) !important;
         color: #fff;
+        box-shadow: 0px 0px 2px #f1c40f;
     }
 
     .red {
         background: linear-gradient(45deg, #c0392b, #e74c3c) !important;
         color: #fff;
+        box-shadow: 0px 0px 2px #e74c3c;
     }
 
     .gray {
@@ -296,35 +300,35 @@
     let data = {
         datasets: [{
             borderColor: blue,
-            borderWidth: 4,
+            borderWidth: 5,
             fill: false
         }]
     };
     let data2 = {
         datasets: [{
             borderColor: green,
-            borderWidth: 4,
+            borderWidth: 5,
             fill: false
         }]
     };
     let data3 = {
         datasets: [{
             borderColor: yellow,
-            borderWidth: 4,
+            borderWidth: 5,
             fill: false
         }]
     };
     let data4 = {
         datasets: [{
                 borderColor: yellow,
-                borderWidth: 4,
+                borderWidth: 5,
                 fill: false,
                 label: "PM 2.5"
 
             },
             {
                 borderColor: red,
-                borderWidth: 4,
+                borderWidth: 5,
                 fill: false,
                 label: "PM 10"
             }
@@ -402,12 +406,12 @@
         // download data
         // let rawData = await getData("./data.json");
         var rawData;
-        if (await getData("http://192.168.1.11/pracamagisterska/backend/data.php")) {
+        if (await getData("http://192.168.1.11/pracamagisterska/backend/data2.php")) {
             console.log("ok");
-            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data.php");
+            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data2.php");
         } else {
             console.log("using sample data");
-            rawData = {"code":200,"message":"Data","data":{"labels":["2020-04-30 17:55:00","2020-04-30 17:57:11","2020-04-30 17:57:44","2020-04-30 17:58:00"],"temperature":[12,23,26,31],"humidity":[13,24,27,32],"pressure":[14,25,28,33],"pm25":[15,26,29,34],"pm10":[16,27,30,45]}};
+            rawData = await getData("./data.json");
         }
 
         let fetchedData = rawData.data;
