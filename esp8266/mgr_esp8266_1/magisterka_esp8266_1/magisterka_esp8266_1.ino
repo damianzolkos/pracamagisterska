@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "SdsDustSensor.h"
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
@@ -6,10 +7,10 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <WiFiManager.h>
 
-const char* ssid = "krosoft_domowy_3615";
-const char* password = "internecik55";
-const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php";
+const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php"; // adres skryptu odbierającego dane
+WiFiManager wifiManager;
 
 int airPeriod = 30;
 
@@ -22,21 +23,20 @@ float pm25, pm10;
 float temperatureBME, humidityBME, pressureBME, altitudeBME;
 float temperatureDHT, humidityDHT;
 
+void configModeCallback (WiFiManager *myWiFiManager) {
+  Serial.println("IP w trybie AccesPoint: ");
+  Serial.println(WiFi.softAPIP().toString());
+}
+
 void setup() {
   Serial.begin(9600);
   sds.begin();
 
-  Serial.println("");
-  WiFi.begin(ssid, password);                                     // WiFi connection
-  Serial.print("Waiting for connection...");
-  while (WiFi.status() != WL_CONNECTED) {                         // Wait for the WiFI connection completion
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
+  wifiManager.setAPCallback(configModeCallback);
+  wifiManager.autoConnect("Czujnik warunków pogodowych");
 
   Serial.println(sds.setActiveReportingMode().toString());                // ensures sensor is in 'active' reporting mode
-  Serial.println(sds.setCustomWorkingPeriod(30).toString());       // sensor sends data every 3 minutes
+  Serial.println(sds.setCustomWorkingPeriod(30).toString());              // sensor sends data every 3 minutes
   dht.setup(D5, DHTesp::DHT22);                                           // Connect DHT sensor to GPIO 17
 
   bme.begin(0x76);

@@ -4,6 +4,99 @@
 <script src="chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
 <style>
+    #bar {
+        margin: 0 auto;
+        width: calc(100% - 50px);
+        border-radius: 10px;
+        background-color: #b3b3b3;
+        color: white;
+        font-size: 11pt;
+        text-align: center;
+        box-shadow: 0px 0px 2px #111;
+        line-height: 25px;
+    }
+
+    .progressBar {
+        width: 100%;
+        width: calc(100%);
+    }
+
+    #progress {
+        display: inline-block;
+        height: 50px;
+    }
+
+    .progressBar img {
+        display: inline-block;
+        width: 50px;
+    }
+
+    .bardzodobry {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 16%;
+        background-color: #58b109;
+        float: left;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        height: 50px;
+    }
+
+    .dobry {
+        width: 16%;
+        background-color: #b0dd10;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #222;
+        height: 50px;
+    }
+
+    .umiarkowany {
+        width: 16%;
+        background-color: #ffd912;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #222;
+        height: 50px;
+    }
+
+    .dostateczny {
+        width: 16%;
+        background-color: #e48100;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
+    .zly {
+        width: 16%;
+        background-color: #e50000;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
+    .bardzozly {
+        width: 20%;
+        background-color: #990002;
+        float: left;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
     #wrapper {
         max-width: 70%;
         margin: 40px auto;
@@ -243,6 +336,35 @@
     </div>
 
     <div class="chart">
+        <p class="name green">Indeks jakości powietrza</p>
+        <div class="canvas">
+            <div id="bar">
+                <div class="bardzodobry">
+                    <p>Bardzo dobry</p>
+                </div>
+                <div class="dobry">
+                    <p>Dobry</p>
+                </div>
+                <div class="dostateczny">
+                    <p>Dostateczny</p>
+                </div>
+                <div class="umiarkowany">
+                    <p>Umiarkowany</p>
+                </div>
+                <div class="zly">
+                    <p>Zły</p>
+                </div>
+                <div class="bardzozly">
+                    <p>Bardzo zły</p>
+                </div>
+            </div>
+            <div class="progressBar">
+                <div id="progress"></div><img src="img/progress.png">
+            </div>
+        </div>
+    </div>
+
+    <div class="chart">
         <p class="name red">Zanieczyszczenie powietrza</p>
         <div class="canvas">
             <div class="legend">
@@ -270,6 +392,17 @@
 </div>
 
 <script>
+    window.addEventListener("resize", aqiProgressBar);
+    window.addEventListener("load", aqiProgressBar);
+
+    function aqiProgressBar() {
+        let aqi = 50;
+        let barWidth = document.getElementById("bar").clientWidth;
+        let poziom = barWidth * aqi / 200;
+        if (poziom > barWidth) poziom = barWidth - 10;
+        document.getElementById("progress").style.minWidth = poziom;
+    }
+
     let ctx1 = document.getElementById('myChart1');
     var ctx1_1 = document.getElementById('myChart1').getContext("2d");
     var blue = ctx1_1.createLinearGradient(500, 0, 100, 0);
