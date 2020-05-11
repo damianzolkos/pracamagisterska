@@ -18,7 +18,7 @@ if($link === false){
 }
 
 $sql = "SELECT * FROM (
-    SELECT * FROM dane ORDER BY id DESC LIMIT 48
+    SELECT * FROM dane ORDER BY id DESC LIMIT 336
 ) sub
 ORDER BY id ASC";
 

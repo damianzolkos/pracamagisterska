@@ -477,11 +477,12 @@
                             response.status);
                         return false;
                     }
+                    console.log(response);
                     return response.json();
                 }
             )
             .catch(function (err) {
-                console.log('Fetch Error :-S', err);
+                console.log('Fetch Error', err);
             });
         return data;
     }
@@ -497,8 +498,6 @@
         data4.datasets[0].data = [];
         data4.datasets[1].data = [];
 
-        // download data
-        // let rawData = await getData("./data.json");
         var rawData;
         if (await getData("http://192.168.1.11/pracamagisterska/backend/data.php")) {
             console.log("ok");
