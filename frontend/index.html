@@ -285,7 +285,6 @@
         Implementacja danych ze stacji pogodowej na stronie internetowej
 
     </div>
-
     <div class="boxes margin-bottom">
         <div class="temp blue">
             <img src="img/thermometer.png">
@@ -312,6 +311,12 @@
             </p>
         </div>
         <div class="clear"></div>
+    </div>
+
+    <div class="gray border center">
+        <button onclick="reRender('day')">DZIEŃ</button>
+        <button onclick="reRender('week')">TYDZIEŃ</button>
+        <button onclick="reRender('month')">MIESIĄC</button>
     </div>
 
     <div class="chart">
@@ -433,35 +438,35 @@
     let data = {
         datasets: [{
             borderColor: blue,
-            borderWidth: 5,
+            borderWidth: 3,
             fill: false
         }]
     };
     let data2 = {
         datasets: [{
             borderColor: green,
-            borderWidth: 5,
+            borderWidth: 3,
             fill: false
         }]
     };
     let data3 = {
         datasets: [{
             borderColor: yellow,
-            borderWidth: 5,
+            borderWidth: 3,
             fill: false
         }]
     };
     let data4 = {
         datasets: [{
                 borderColor: yellow,
-                borderWidth: 5,
+                borderWidth: 3,
                 fill: false,
                 label: "PM 2.5"
 
             },
             {
                 borderColor: red,
-                borderWidth: 5,
+                borderWidth: 3,
                 fill: false,
                 label: "PM 10"
             }
@@ -487,7 +492,8 @@
         return data;
     }
 
-    async function renderCharts() {
+    var flaga = 1;
+    async function renderCharts(data_period) {
         data.labels = [];
         data.datasets[0].data = [];
         data2.labels = [];
@@ -498,13 +504,23 @@
         data4.datasets[0].data = [];
         data4.datasets[1].data = [];
 
+        var url = "";
+
+        if (data_period == "day") {
+            url = "http://192.168.1.11/pracamagisterska/backend/data.php";
+        } else if (data_period == "week") {
+            url = "http://192.168.1.11/pracamagisterska/backend/data_week.php";
+        } else if (data_period == "month") {
+            url = "http://192.168.1.11/pracamagisterska/backend/data_month.php";
+        }
+
         var rawData;
-        if (await getData("http://192.168.1.11/pracamagisterska/backend/data.php")) {
+        if (await getData(url)) {
             console.log("ok");
-            rawData = await getData("http://192.168.1.11/pracamagisterska/backend/data.php");
+            rawData = await getData(url);
         } else {
-            console.log("using sample data");
-            rawData = await getData("./data.json");
+            // console.log("using sample data");
+            // rawData = await getData("./data.json");
         }
 
         let fetchedData = rawData.data;
@@ -546,7 +562,8 @@
                     },
                     ticks: {
                         callback: function (value, index, values) {
-                            return value.slice(11, 16);
+                            return value.slice(5, 16);
+                            // return value.slice(11, 16);
                         }
                     }
                 }],
@@ -693,31 +710,44 @@
         document.getElementById('actualPM10').innerHTML = Math.round(data4.datasets[1].data[data4.datasets[1].data
             .length - 1]);
 
-        let myChart1 = new Chart(ctx1, {
-            type: 'line',
-            data: data,
-            options: options
-        });
+        if (flaga) {
+            myChart1 = new Chart(ctx1, {
+                type: 'line',
+                data: data,
+                options: options
+            });
 
-        let myChart2 = new Chart(ctx2, {
-            type: 'line',
-            data: data2,
-            options: options2
-        });
+            myChart2 = new Chart(ctx2, {
+                type: 'line',
+                data: data2,
+                options: options2
+            });
 
-        let myChart3 = new Chart(ctx3, {
-            type: 'line',
-            data: data3,
-            options: options3
-        });
+            myChart3 = new Chart(ctx3, {
+                type: 'line',
+                data: data3,
+                options: options3
+            });
 
-        let myChart4 = new Chart(ctx4, {
-            type: 'line',
-            data: data4,
-            options: options4
-        });
+            myChart4 = new Chart(ctx4, {
+                type: 'line',
+                data: data4,
+                options: options4
+            });
+            flaga = 0;
+        } else {
+            myChart1.update();
+            myChart2.update();
+            myChart3.update();
+            myChart4.update();
+        }
+
     }
     renderCharts();
+
+    function reRender(data_period) {
+        renderCharts(data_period);
+    }
 </script>
 
 </html>
