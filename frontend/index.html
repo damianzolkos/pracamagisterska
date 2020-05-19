@@ -276,6 +276,33 @@
             margin-bottom: 50px;
         }
     }
+
+    button {
+        padding: 10px;
+        border: 0px;
+        color: #fff;
+        background-color: darksalmon;
+        cursor: pointer;
+        margin-left: 10px;
+        border-radius: 2px;
+    }
+
+    button:hover {
+        background-color: salmon;
+    }
+
+    .guziki {
+        margin-top: 40px;
+        padding: 10px 0px;
+    }
+
+    .active {
+        background-color: rgb(255, 98, 81);
+    }
+
+    button:focus {
+        outline: 0;
+    }
 </style>
 
 <div id="wrapper">
@@ -313,10 +340,11 @@
         <div class="clear"></div>
     </div>
 
-    <div class="gray border center">
-        <button onclick="reRender('day')">DZIEŃ</button>
-        <button onclick="reRender('week')">TYDZIEŃ</button>
-        <button onclick="reRender('month')">MIESIĄC</button>
+    <div class="gray border center guziki">
+        Pokaż ostatni:
+        <button id="day" onclick="reRender('day')">DZIEŃ</button>
+        <button id="month" onclick="reRender('week')">TYDZIEŃ</button>
+        <button id="year" onclick="reRender('month')">MIESIĄC</button>
     </div>
 
     <div class="chart">
@@ -438,36 +466,54 @@
     let data = {
         datasets: [{
             borderColor: blue,
-            borderWidth: 3,
-            fill: false
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Temperatura"
         }]
     };
     let data2 = {
         datasets: [{
             borderColor: green,
-            borderWidth: 3,
-            fill: false
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Wilgotność"
         }]
     };
     let data3 = {
         datasets: [{
             borderColor: yellow,
-            borderWidth: 3,
-            fill: false
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Ciśnienie"
         }]
     };
     let data4 = {
         datasets: [{
                 borderColor: yellow,
-                borderWidth: 3,
+                borderWidth: 5,
                 fill: false,
+                pointHitRadius: 20,
+                pointRadius: 0,
+                pointHoverRadius: 4,
                 label: "PM 2.5"
 
             },
             {
                 borderColor: red,
-                borderWidth: 3,
+                borderWidth: 5,
                 fill: false,
+                pointHitRadius: 20,
+                pointRadius: 0,
+                pointHoverRadius: 4,
                 label: "PM 10"
             }
         ]
@@ -508,10 +554,21 @@
 
         if (data_period == "day") {
             url = "http://192.168.1.11/pracamagisterska/backend/data.php";
+            document.getElementById("day").className = "active";
+            document.getElementById("month").className = "";
+            document.getElementById("year").className = "";
         } else if (data_period == "week") {
             url = "http://192.168.1.11/pracamagisterska/backend/data_week.php";
+            document.getElementById("month").className = "active";
+            document.getElementById("day").className = "";
+            document.getElementById("year").className = "";
+
         } else if (data_period == "month") {
             url = "http://192.168.1.11/pracamagisterska/backend/data_month.php";
+            document.getElementById("year").className = "active";
+            document.getElementById("month").className = "";
+            document.getElementById("day").className = "";
+
         }
 
         var rawData;

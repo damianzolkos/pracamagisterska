@@ -8,9 +8,9 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <WiFiManager.h>
+WiFiManager wifiManager;
 
 const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php"; // adres skryptu odbierającego dane
-WiFiManager wifiManager;
 
 int airPeriod = 30;
 
@@ -51,6 +51,24 @@ void loop() {
   humidityBME = bme.readHumidity();
   pressureBME = bme.readPressure() / 100.0F;
   altitudeBME = bme.readAltitude(SEALEVELPRESSURE_HPA);
+
+  Serial.println("--------------------------------------------");
+  Serial.print("Wilgotnosc rurka: ");
+  Serial.print(humidityDHT);
+  Serial.println("");
+  Serial.print("Temperatura rurka: ");
+  Serial.print(temperatureDHT);
+  Serial.println("");
+  Serial.print("Stan grzalki: ");
+  if (humidityDHT < 50) {
+    //    digitalWrite(grzalka, HIGH);
+    Serial.print("ON");
+  } else {
+    //    digitalWrite(grzalka, LOW);
+    Serial.print("OFF");
+  }
+  Serial.println("");
+  Serial.println("--------------------------------------------");
 
   PmResult pm = sds.readPm();
   if (pm.isOk()) {
