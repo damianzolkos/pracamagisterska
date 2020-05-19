@@ -1,9 +1,5 @@
 <?php
 include 'header.php';
-// header.php:
-// <?php
-// $link = mysqli_connect("localhost", "root", "password", "mgr");
-// ? >
 
 header('Access-Control-Allow-Origin: *');
 
@@ -32,7 +28,7 @@ if($result = mysqli_query($link, $sql)){
         $newID = $row['id'] + 1;
         $sql2 = "INSERT INTO `dane` (`id`, `time`, `temp`, `hum`, `press`, `pm25`, `pm10`) VALUES (" . $newID . ", CURRENT_TIMESTAMP, '" . $temp . "', '" . $hum . "', '" . $press . "', '" . $pm25 . "', '" . $pm10 . "')";
         if(mysqli_query($link, $sql2)){
-            echo "luksja1.";
+            echo "ok.";
         } else {
             echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
         }

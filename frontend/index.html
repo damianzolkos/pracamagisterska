@@ -530,9 +530,7 @@
     }
 
     function aqiProgressBar(data) {
-        console.log(data);
         let aqi = data.reduce((a,b) => a + b, 0) / data.length;
-        console.log("AQI:", aqi);
         let barWidth = document.getElementById("bar").clientWidth;
         let poziom = barWidth * aqi / 200;
         if (poziom > barWidth) poziom = barWidth - 10;
@@ -555,7 +553,7 @@
         var url = "";
 
         if (data_period == "day") {
-            url = "http://192.168.1.11/pracamagisterska/backend/data.php";
+            url = "http://192.168.1.11/pracamagisterska/backend/data_day.php";
             document.getElementById("day").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("year").className = "";
