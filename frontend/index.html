@@ -392,7 +392,7 @@
                 </div>
             </div>
             <div class="progressBar">
-                <div id="progress"></div><img src="img/progress.png">
+                <div id="progress"></div><img id="drop" title="" src="img/progress.png">
             </div>
         </div>
     </div>
@@ -425,17 +425,6 @@
 </div>
 
 <script>
-    window.addEventListener("resize", aqiProgressBar);
-    window.addEventListener("load", aqiProgressBar);
-
-    function aqiProgressBar() {
-        let aqi = 50;
-        let barWidth = document.getElementById("bar").clientWidth;
-        let poziom = barWidth * aqi / 200;
-        if (poziom > barWidth) poziom = barWidth - 10;
-        document.getElementById("progress").style.minWidth = poziom;
-    }
-
     let ctx1 = document.getElementById('myChart1');
     var ctx1_1 = document.getElementById('myChart1').getContext("2d");
     var blue = ctx1_1.createLinearGradient(500, 0, 100, 0);
@@ -462,6 +451,8 @@
     var red = ctx4_2.createLinearGradient(500, 0, 100, 0);
     red.addColorStop(1, "#c0392b");
     red.addColorStop(0, "#e74c3c");
+
+    window.addEventListener("resize", aqiProgressBar);
 
     let data = {
         datasets: [{
@@ -538,6 +529,17 @@
         return data;
     }
 
+    function aqiProgressBar(data) {
+        console.log(data);
+        let aqi = data.reduce((a,b) => a + b, 0) / data.length;
+        console.log("AQI:", aqi);
+        let barWidth = document.getElementById("bar").clientWidth;
+        let poziom = barWidth * aqi / 200;
+        if (poziom > barWidth) poziom = barWidth - 10;
+        document.getElementById("progress").style.minWidth = poziom;
+        document.getElementById("drop").title = aqi;
+    }
+
     var flaga = 1;
     async function renderCharts(data_period) {
         data.labels = [];
@@ -596,6 +598,8 @@
         data4.datasets[0].data = fetchedData.pm25;
         data4.datasets[1].data = fetchedData.pm10;
         data4.labels = fetchedData.labels;
+
+        aqiProgressBar(fetchedData.pm25);
 
         let options = {
             responsive: true,
@@ -800,7 +804,7 @@
         }
 
     }
-    renderCharts();
+    renderCharts("day");
 
     function reRender(data_period) {
         renderCharts(data_period);
