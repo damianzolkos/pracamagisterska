@@ -18,7 +18,7 @@ $sql = "SELECT * FROM (
 ) sub
 ORDER BY id ASC";
 
-if($result = mysqli_query($link, $sql)){
+if($result = mysqli_query($link, $sql)){	 
     if(mysqli_num_rows($result) > 0){
 
     	$ids = array();

@@ -568,7 +568,6 @@
             document.getElementById("year").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("day").className = "";
-
         }
 
         var rawData;
@@ -576,8 +575,8 @@
             console.log("ok");
             rawData = await getData(url);
         } else {
-            // console.log("using sample data");
-            // rawData = await getData("./data.json");
+            console.log("using sample data");
+            rawData = await getData("./data.json");
         }
 
         let fetchedData = rawData.data;

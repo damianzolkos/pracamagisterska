@@ -18,6 +18,7 @@ SdsDustSensor sds(Serial);
 DHTesp dht;
 
 #define SEALEVELPRESSURE_HPA (1013.25)
+#define grzalka D5
 Adafruit_BME280 bme;
 float pm25, pm10;
 float temperatureBME, humidityBME, pressureBME, altitudeBME;
@@ -61,10 +62,10 @@ void loop() {
   Serial.println("");
   Serial.print("Stan grzalki: ");
   if (humidityDHT < 50) {
-    //    digitalWrite(grzalka, HIGH);
+        digitalWrite(grzalka, HIGH);
     Serial.print("ON");
   } else {
-    //    digitalWrite(grzalka, LOW);
+        digitalWrite(grzalka, LOW);
     Serial.print("OFF");
   }
   Serial.println("");
@@ -84,7 +85,7 @@ void loop() {
     doc["pm25"] = pm25;
     doc["pm10"] = pm10;
 
-    serializeJson(doc, response);
+    serializeJson(doc, response); 
     Serial.println(response);
 
     HTTPClient http;                                              // Declare object of class HTTPClient
