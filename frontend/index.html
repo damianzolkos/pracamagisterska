@@ -576,24 +576,15 @@
             rawData = await getData(url);
         } else {
             console.log("using sample data");
-            // rawData = await getData("./data.json");
             if (data_period == "day") {
                 url = "./data_day.json";
-                document.getElementById("day").className = "active";
-                document.getElementById("month").className = "";
-                document.getElementById("year").className = "";
             } else if (data_period == "week") {
                 url = "./data_week.json";
-                document.getElementById("month").className = "active";
-                document.getElementById("day").className = "";
-                document.getElementById("year").className = "";
 
             } else if (data_period == "month") {
                 url = "./data_month.json";
-                document.getElementById("year").className = "active";
-                document.getElementById("month").className = "";
-                document.getElementById("day").className = "";
             }
+            rawData = await getData(url);
         }
 
         let fetchedData = rawData.data;
