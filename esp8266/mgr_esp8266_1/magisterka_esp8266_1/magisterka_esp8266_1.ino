@@ -10,7 +10,7 @@
 #include <WiFiManager.h>
 WiFiManager wifiManager;
 
-const char* serverAddress = "http://192.168.1.11/pracamagisterska/backend/receive.php"; // adres skryptu odbierającego dane
+const char* serverAddress = "http://stacjapogodowaweii.epizy.com/backend/receive.php"; // adres skryptu odbierającego dane
 
 unsigned long zapamietanyCzas2 = 0;
 uint8_t trybGrzalki, poziomWilgotnosci;
