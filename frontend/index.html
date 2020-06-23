@@ -89,7 +89,7 @@
         width: 20%;
         background-color: #990002;
         float: left;
-        border-top-right-radius: 10px;  
+        border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -530,7 +530,7 @@
     }
 
     function aqiProgressBar(data) {
-        let aqi = data.reduce((a,b) => a + b, 0) / data.length;
+        let aqi = data.reduce((a, b) => a + b, 0) / data.length;
         let barWidth = document.getElementById("bar").clientWidth;
         let poziom = barWidth * aqi / 200;
         if (poziom > barWidth) poziom = barWidth - 10;
@@ -576,7 +576,24 @@
             rawData = await getData(url);
         } else {
             console.log("using sample data");
-            rawData = await getData("./data.json");
+            // rawData = await getData("./data.json");
+            if (data_period == "day") {
+                url = "./data_day.json";
+                document.getElementById("day").className = "active";
+                document.getElementById("month").className = "";
+                document.getElementById("year").className = "";
+            } else if (data_period == "week") {
+                url = "./data_week.json";
+                document.getElementById("month").className = "active";
+                document.getElementById("day").className = "";
+                document.getElementById("year").className = "";
+
+            } else if (data_period == "month") {
+                url = "./data_month.json";
+                document.getElementById("year").className = "active";
+                document.getElementById("month").className = "";
+                document.getElementById("day").className = "";
+            }
         }
 
         let fetchedData = rawData.data;
