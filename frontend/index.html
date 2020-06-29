@@ -509,7 +509,7 @@
         let poziom = barWidth * aqi / 200;
         if (poziom > barWidth) poziom = barWidth - 10;
         document.getElementById("progress").style.minWidth = poziom;
-        document.getElementById("drop").title = aqi;
+        document.getElementById("drop").title = Math.round(aqi);
     }
 
     var flaga = 1;
