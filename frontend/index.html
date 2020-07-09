@@ -1,5 +1,6 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stacja pogodowa</title>
 <meta charset="utf-8">
 <script src="chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
@@ -385,7 +386,7 @@
     </div>
 
     <div class="canvas gray border footer">
-        &copy; <a href="http://damianzolkos.github.io">Damian Żółkoś</a> 2020
+        &copy; <a href="http://damianzolkos.github.io">DŻ</a> 2020
         <br><br>
         Icons made by<br>
         <a href="https://www.flaticon.com/authors/kirill-kazachek" title="Kirill Kazachek">
@@ -527,18 +528,18 @@
         var url = "";
 
         if (data_period == "day") {
-            url = "http://stacjapogodowaweii.epizy.com/backend/data_day.php";
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_day.php";
             document.getElementById("day").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("year").className = "";
         } else if (data_period == "week") {
-            url = "http://stacjapogodowaweii.epizy.com/backend/data_week.php";
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_week.php";
             document.getElementById("month").className = "active";
             document.getElementById("day").className = "";
             document.getElementById("year").className = "";
 
         } else if (data_period == "month") {
-            url = "http://stacjapogodowaweii.epizy.com/backend/data_month.php";
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_month.php";
             document.getElementById("year").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("day").className = "";
