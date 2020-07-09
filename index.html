@@ -5,7 +5,7 @@
 <script src="chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
 <style>
-    #bar {
+#bar {
         margin: 0 auto;
         width: calc(100% - 50px);
         border-radius: 10px;
@@ -99,8 +99,8 @@
     }
 
     #wrapper {
-        max-width: 100%;
-        padding: 0px;
+        max-width: 70%;
+        margin: 40px auto;
         font-family: 'Roboto', sans-serif;
         font-weight: 300;
     }
@@ -252,6 +252,32 @@
         vertical-align: middle;
     }
 
+    @media screen and (max-width: 1000px) {
+        #wrapper {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        #wrapper {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            max-width: 95%;
+        }
+
+        .temp {
+            width: 100%;
+            height: 130px;
+            margin-top: 15px;
+        }
+
+        .temp:last-child {
+            margin-bottom: 50px;
+        }
+    }
+
     button {
         padding: 10px;
         border: 0px;
@@ -282,11 +308,9 @@
 
 <div id="wrapper">
 
-    <!-- <div class="gray canvas border center margin-bottom">
-
+    <div class="gray canvas border center margin-bottom">
         Implementacja danych ze stacji pogodowej na stronie internetowej
-
-    </div> -->
+    </div>
     <div class="boxes margin-bottom">
         <div class="temp blue">
             <img src="img/thermometer.png">

@@ -1,0 +1,792 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8">
+<script src="../chart-js/Chart.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
+<style>
+    #bar {
+        margin: 0 auto;
+        width: calc(100% - 50px);
+        border-radius: 10px;
+        background-color: #b3b3b3;
+        color: white;
+        font-size: 11pt;
+        text-align: center;
+        box-shadow: 0px 0px 2px #111;
+        line-height: 25px;
+    }
+
+    .progressBar {
+        width: 100%;
+        width: calc(100%);
+    }
+
+    #progress {
+        display: inline-block;
+        height: 50px;
+    }
+
+    .progressBar img {
+        display: inline-block;
+        width: 50px;
+    }
+
+    .bardzodobry {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 16%;
+        background-color: #58b109;
+        float: left;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        height: 50px;
+    }
+
+    .dobry {
+        width: 16%;
+        background-color: #b0dd10;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #222;
+        height: 50px;
+    }
+
+    .umiarkowany {
+        width: 16%;
+        background-color: #ffd912;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #222;
+        height: 50px;
+    }
+
+    .dostateczny {
+        width: 16%;
+        background-color: #e48100;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
+    .zly {
+        width: 16%;
+        background-color: #e50000;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
+    .bardzozly {
+        width: 20%;
+        background-color: #990002;
+        float: left;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        height: 50px;
+    }
+
+    #wrapper {
+        max-width: 100%;
+        padding: 0px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+
+    .boxes {
+        clear: both;
+        display: block;
+        position: relative;
+    }
+
+    .temp {
+        position: relative;
+        width: calc(50% - 10px);
+        height: 180px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        border-radius: 2px;
+    }
+
+    .chart {
+        clear: both;
+        display: block;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0px 0px 2px #111;
+        border-radius: 2px;
+    }
+
+    .name {
+        position: relative;
+        font-weight: 300;
+        font-size: 14pt;
+        text-shadow: 0px 0px 2px #888;
+        width: calc(100% - 40px);
+        padding: 20px;
+        box-shadow: 0px 0px 1px #111;
+        border-radius: 1px;
+        z-index: -100;
+    }
+
+    .chart_h1 {
+        margin: 0;
+        padding: 15px 0;
+        font-size: 16pt;
+        font-weight: 600;
+        border-radius: 2px;
+    }
+
+    .canvas {
+        padding: 20px;
+    }
+
+    .border {
+        border-radius: 1px;
+    }
+
+    .blue {
+        background: linear-gradient(45deg, #0288d1, #26c6da) !important;
+        color: #fff;
+        box-shadow: 0px 0px 2px #26c6da;
+    }
+
+    .green {
+        background: linear-gradient(45deg, #1abc9c, #2ecc71) !important;
+        color: #fff;
+        box-shadow: 0px 0px 2px #2ecc71;
+    }
+
+    .yellow {
+        background: linear-gradient(45deg, #f39c12, #f1c40f) !important;
+        color: #fff;
+        box-shadow: 0px 0px 2px #f1c40f;
+    }
+
+    .red {
+        background: linear-gradient(45deg, #c0392b, #e74c3c) !important;
+        color: #fff;
+        box-shadow: 0px 0px 2px #e74c3c;
+    }
+
+    .gray {
+        background: linear-gradient(45deg, #2c3e50, #34495e) !important;
+        color: #fff;
+    }
+
+    .temp:nth-child(odd) {
+        float: left;
+    }
+
+    .temp:nth-child(even) {
+        float: right;
+    }
+
+    .temp_h1 {
+        color: #fff;
+        font-weight: 200;
+        font-size: 42pt;
+        margin-top: 50px;
+    }
+
+    .pm {
+        font-size: 22pt;
+    }
+
+    img {
+        width: 120px;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 10pt;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    a:link,
+    a:visited {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .margin-bottom {
+        margin-bottom: 20px;
+    }
+
+    .clear {
+        clear: both;
+        display: block;
+    }
+
+    .legend {
+        margin-top: -25px;
+        padding: 0px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .legend p {
+        display: inline-flex;
+        margin-left: 8px;
+        margin-right: 15px;
+        font-size: 11pt;
+        height: 30px;
+        vertical-align: middle;
+    }
+
+    button {
+        padding: 10px;
+        border: 0px;
+        color: #fff;
+        background-color: darksalmon;
+        cursor: pointer;
+        margin-left: 10px;
+        border-radius: 2px;
+    }
+
+    button:hover {
+        background-color: salmon;
+    }
+
+    .guziki {
+        margin-top: 40px;
+        padding: 10px 0px;
+    }
+
+    .active {
+        background-color: rgb(255, 98, 81);
+    }
+
+    button:focus {
+        outline: 0;
+    }
+</style>
+
+<div id="wrapper">
+
+    <!-- <div class="gray canvas border center margin-bottom">
+
+        Implementacja danych ze stacji pogodowej na stronie internetowej
+
+    </div> -->
+    <div class="boxes margin-bottom">
+        <div class="temp blue">
+            <img src="../img/thermometer.png">
+            <p class="temp_h1">
+                <span id="actualTemperature"></span>&deg;C
+            </p>
+        </div>
+        <div class="temp green">
+            <img src="../img/humidity.png">
+            <p class="temp_h1">
+                <span id="actualHumidity"></span>%
+            </p>
+        </div>
+        <div class="temp yellow">
+            <img src="../img/wind2.png">
+            <p class="temp_h1">
+                <span id="actualPM25"></span><span class="pm"> μm/m<sup>3</sup></span>
+            </p>
+        </div>
+        <div class="temp red">
+            <img src="../img/smoke2.png">
+            <p class="temp_h1">
+                <span id="actualPM10"></span><span class="pm"> μm/m<sup>3</sup></span>
+            </p>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="gray border center guziki">
+        Pokaż ostatni:
+        <button id="day" onclick="reRender('day')">DZIEŃ</button>
+        <button id="month" onclick="reRender('week')">TYDZIEŃ</button>
+        <button id="year" onclick="reRender('month')">MIESIĄC</button>
+    </div>
+
+    <div class="chart">
+        <p class="name blue">Temperatura</p>
+        <div class="canvas">
+            <canvas id="myChart1" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name green">Wilgotność</p>
+        <div class="canvas">
+            <canvas id="myChart2" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name yellow">Ciśnienie</p>
+        <div class="canvas">
+            <canvas id="myChart3" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name green">Indeks jakości powietrza</p>
+        <div class="canvas">
+            <div id="bar">
+                <div class="bardzodobry">
+                    <p>Bardzo dobry</p>
+                </div>
+                <div class="dobry">
+                    <p>Dobry</p>
+                </div>
+                <div class="dostateczny">
+                    <p>Dostateczny</p>
+                </div>
+                <div class="umiarkowany">
+                    <p>Umiarkowany</p>
+                </div>
+                <div class="zly">
+                    <p>Zły</p>
+                </div>
+                <div class="bardzozly">
+                    <p>Bardzo zły</p>
+                </div>
+            </div>
+            <div class="progressBar">
+                <div id="progress"></div><img id="drop" title="" src="../img/progress.png">
+            </div>
+        </div>
+    </div>
+
+    <div class="chart">
+        <p class="name red">Zanieczyszczenie powietrza</p>
+        <div class="canvas">
+            <div class="legend">
+                <div style="display: inline-block; width: 20px; height: 20px; background-color: #f39c12;"></div>
+                <p>PM 2.5</p>
+                <div style="display: inline-block; width: 20px; height: 20px; background-color: #c0392b;"></div>
+                <p>PM 10</p>
+            </div>
+            <canvas id="myChart4" width="10" height="6"></canvas>
+        </div>
+    </div>
+
+    <div class="canvas gray border footer">
+        &copy; <a href="http://damianzolkos.github.io">DŻ</a> 2020
+        <br><br>
+        Icons made by<br>
+        <a href="https://www.flaticon.com/authors/kirill-kazachek" title="Kirill Kazachek">
+            Kirill Kazachek,</a>
+        <a href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">
+            Vitaly Gorbachev,</a>
+        <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik,</a>
+        <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a><br>
+        from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+    </div>
+</div>
+
+<script>
+    let ctx1 = document.getElementById('myChart1');
+    var ctx1_1 = document.getElementById('myChart1').getContext("2d");
+    var blue = ctx1_1.createLinearGradient(500, 0, 100, 0);
+    blue.addColorStop(1, "#0288d1");
+    blue.addColorStop(0, "#26c6da");
+
+    let ctx2 = document.getElementById('myChart2');
+    var ctx2_2 = document.getElementById('myChart2').getContext("2d");
+    var green = ctx2_2.createLinearGradient(500, 0, 100, 0);
+    green.addColorStop(1, "#1abc9c");
+    green.addColorStop(0, "#2ecc71");
+
+    let ctx3 = document.getElementById('myChart3');
+    var ctx3_2 = document.getElementById('myChart3').getContext("2d");
+    var green = ctx3_2.createLinearGradient(500, 0, 100, 0);
+    green.addColorStop(1, "#1abc9c");
+    green.addColorStop(0, "#2ecc71");
+
+    let ctx4 = document.getElementById('myChart4');
+    var ctx4_2 = document.getElementById('myChart4').getContext("2d");
+    var yellow = ctx4_2.createLinearGradient(500, 0, 100, 0);
+    yellow.addColorStop(1, "#f39c12");
+    yellow.addColorStop(0, "#f1c40f");
+    var red = ctx4_2.createLinearGradient(500, 0, 100, 0);
+    red.addColorStop(1, "#c0392b");
+    red.addColorStop(0, "#e74c3c");
+
+    window.addEventListener("resize", aqiProgressBar);
+
+    let data = {
+        datasets: [{
+            borderColor: blue,
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Temperatura"
+        }]
+    };
+    let data2 = {
+        datasets: [{
+            borderColor: green,
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Wilgotność"
+        }]
+    };
+    let data3 = {
+        datasets: [{
+            borderColor: yellow,
+            borderWidth: 5,
+            fill: false,
+            pointHitRadius: 20,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            label: "Ciśnienie"
+        }]
+    };
+    let data4 = {
+        datasets: [{
+                borderColor: yellow,
+                borderWidth: 5,
+                fill: false,
+                pointHitRadius: 20,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                label: "PM 2.5"
+
+            },
+            {
+                borderColor: red,
+                borderWidth: 5,
+                fill: false,
+                pointHitRadius: 20,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                label: "PM 10"
+            }
+        ]
+    };
+
+    async function getData(url) {
+        const data = await fetch(url)
+            .then(
+                function (response) {
+                    if (response.status !== 200) {
+                        console.log('There was a problem. Status Code: ' +
+                            response.status);
+                        return false;
+                    }
+                    console.log(response);
+                    return response.json();
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error', err);
+            });
+        return data;
+    }
+
+    function aqiProgressBar(data) {
+        let aqi = data.reduce((a, b) => a + b, 0) / data.length;
+        let barWidth = document.getElementById("bar").clientWidth;
+        let poziom = barWidth * aqi / 200;
+        if (poziom > barWidth) poziom = barWidth - 10;
+        document.getElementById("progress").style.minWidth = poziom;
+        document.getElementById("drop").title = Math.round(aqi);
+    }
+
+    var flaga = 1;
+    async function renderCharts(data_period) {
+        data.labels = [];
+        data.datasets[0].data = [];
+        data2.labels = [];
+        data2.datasets[0].data = [];
+        data3.labels = [];
+        data3.datasets[0].data = [];
+        data4.labels = [];
+        data4.datasets[0].data = [];
+        data4.datasets[1].data = [];
+
+        var url = "";
+
+        if (data_period == "day") {
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_day.php";
+            document.getElementById("day").className = "active";
+            document.getElementById("month").className = "";
+            document.getElementById("year").className = "";
+        } else if (data_period == "week") {
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_week.php";
+            document.getElementById("month").className = "active";
+            document.getElementById("day").className = "";
+            document.getElementById("year").className = "";
+
+        } else if (data_period == "month") {
+            url = "http://stacjapogodowa.prz.edu.pl/backend/data_month.php";
+            document.getElementById("year").className = "active";
+            document.getElementById("month").className = "";
+            document.getElementById("day").className = "";
+        }
+
+        var rawData;
+        if (await getData(url)) {
+            console.log("ok");
+            rawData = await getData(url);
+        } else {
+            console.log("using sample data");
+            if (data_period == "day") {
+                url = "../data_day.json";
+            } else if (data_period == "week") {
+                url = "../data_week.json";
+
+            } else if (data_period == "month") {
+                url = "../data_month.json";
+            }
+            rawData = await getData(url);
+        }
+
+        let fetchedData = rawData.data;
+        console.log("code: ", rawData.code);
+        console.log("raw data: ", fetchedData);
+
+        data.datasets[0].data = fetchedData.temperature;
+        data.labels = fetchedData.labels;
+
+        data2.datasets[0].data = fetchedData.humidity;
+        data2.labels = fetchedData.labels;
+
+        data3.datasets[0].data = fetchedData.pressure;
+        data3.labels = fetchedData.labels;
+
+        data4.datasets[0].data = fetchedData.pm25;
+        data4.datasets[1].data = fetchedData.pm10;
+        data4.labels = fetchedData.labels;
+
+        aqiProgressBar(fetchedData.pm25);
+
+        let options = {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: true,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.slice(5, 16);
+                        }
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        suggestedMax: Math.max.apply(Math, data.datasets[0].data) + 10,
+                        suggestedMin: Math.min.apply(Math, data.datasets[0].data) - 10
+                    }
+                }]
+            }
+        };
+
+        let options2 = {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: true,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.slice(5, 16);
+                        }
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        suggestedMax: Math.max.apply(Math, data2.datasets[0].data) + 10,
+                        suggestedMin: Math.min.apply(Math, data2.datasets[0].data) - 10
+                    }
+                }]
+            }
+        };
+
+        let options3 = {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: true,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.slice(5, 16);
+                        }
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        suggestedMax: Math.max.apply(Math, data3.datasets[0].data) + 10,
+                        suggestedMin: Math.min.apply(Math, data3.datasets[0].data) - 10
+                    }
+                }]
+            }
+        };
+
+        let options4 = {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: true,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.slice(5, 16);
+                        }
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: ''
+                    },
+                    ticks: {
+                        suggestedMax: Math.max.apply(Math, data4.datasets[0].data) + 10,
+                        suggestedMin: Math.min.apply(Math, data4.datasets[0].data) - 10
+                    }
+                }]
+            }
+        };
+
+        document.getElementById('actualTemperature').innerHTML = Math.round(data.datasets[0].data[data.datasets[0]
+            .data.length - 1]);
+        document.getElementById('actualHumidity').innerHTML = Math.round(data2.datasets[0].data[data2.datasets[0]
+            .data.length - 1]);
+        document.getElementById('actualPM25').innerHTML = Math.round(data4.datasets[0].data[data4.datasets[0].data
+            .length - 1]);
+        document.getElementById('actualPM10').innerHTML = Math.round(data4.datasets[1].data[data4.datasets[1].data
+            .length - 1]);
+
+        if (flaga) {
+            myChart1 = new Chart(ctx1, {
+                type: 'line',
+                data: data,
+                options: options
+            });
+
+            myChart2 = new Chart(ctx2, {
+                type: 'line',
+                data: data2,
+                options: options2
+            });
+
+            myChart3 = new Chart(ctx3, {
+                type: 'line',
+                data: data3,
+                options: options3
+            });
+
+            myChart4 = new Chart(ctx4, {
+                type: 'line',
+                data: data4,
+                options: options4
+            });
+            flaga = 0;
+        } else {
+            myChart1.update();
+            myChart2.update();
+            myChart3.update();
+            myChart4.update();
+        }
+
+    }
+    renderCharts("day");
+
+    function reRender(data_period) {
+        renderCharts(data_period);
+    }
+</script>
+
+</html>
