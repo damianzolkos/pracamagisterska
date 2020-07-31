@@ -4,6 +4,10 @@
 <script src="../chart-js/Chart.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&amp;subset=latin-ext" rel="stylesheet" />
 <style>
+    body, html {
+        margin: 5;
+        padding: 0;
+    }
     #bar {
         margin: 0 auto;
         width: calc(100% - 50px);
@@ -15,7 +19,6 @@
         box-shadow: 0px 0px 2px #111;
         line-height: 25px;
     }
-
     .progressBar {
         width: 100%;
         width: calc(100%);
@@ -203,13 +206,42 @@
         margin-top: 50px;
     }
 
+    img {
+        width: 120px;
+    }
+
     .pm {
         font-size: 22pt;
     }
 
-    img {
-        width: 120px;
+    @media screen and (max-width: 900px) {
+        .temp_h1 {
+            font-size: 38pt;
+        }
+
+        img {
+            width: 110px;
+        }
+
+        .pm {
+            font-size: 20pt;
+        }
     }
+
+    @media screen and (max-width: 600px) {
+        .temp_h1 {
+            font-size: 26pt;
+        }
+
+        img {
+            width: 70px;
+        }
+
+        .pm {
+            font-size: 14pt;
+        }
+    }
+
 
     .footer {
         text-align: center;
@@ -527,18 +559,18 @@
         var url = "";
 
         if (data_period == "day") {
-            url = "http://stacjapogodowa.prz.edu.pl/backend/data_day.php";
+            url = "https://stacjapogodowa.prz.edu.pl/backend/data_day.php";
             document.getElementById("day").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("year").className = "";
         } else if (data_period == "week") {
-            url = "http://stacjapogodowa.prz.edu.pl/backend/data_week.php";
+            url = "https://stacjapogodowa.prz.edu.pl/backend/data_week.php";
             document.getElementById("month").className = "active";
             document.getElementById("day").className = "";
             document.getElementById("year").className = "";
 
         } else if (data_period == "month") {
-            url = "http://stacjapogodowa.prz.edu.pl/backend/data_month.php";
+            url = "https://stacjapogodowa.prz.edu.pl/backend/data_month.php";
             document.getElementById("year").className = "active";
             document.getElementById("month").className = "";
             document.getElementById("day").className = "";

@@ -119,6 +119,7 @@ void loop() {
     int httpCode = http.POST(response);                           // Send the request
     String payload = http.getString();                            // Get the response payload
     http.end();                                                   // Close connection
+    Serial.println(payload);
   } else {
     Serial.print("Could not read values from sensor, reason: ");
     Serial.println(pm.statusToString());
